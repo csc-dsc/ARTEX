@@ -9,6 +9,25 @@ AI 自主渗透测试系统（Go 后端 + Next.js 前端）
 
 📦 **该仓库为ARTEX最后一个版本纯源码备份。原 Docker 镜像源 `autumn27/artex` 已失效，现由本仓库自维护镜像 `mianhuatang11/artex`（Docker Hub）；拉取失败时可 `docker compose build` 从纯源码本地构建，无任何外部预编译依赖。**
 
+---
+
+## Fork 状态与安全审查（csc-dsc，2026-10-28）
+
+**同步状态**：上游 `mhtsec/ARTEX` 与 `Autumn-27/ARTEX` 已于 2026-10-16 之后私有化/删除，公开渠道已无更新的源码。本仓库源码冻结于 `a9d11cb`（2026-10-10，norma v0.4.3），即为**最后的公开源码版本**。仅存的镜像仓库 `trhhubsd/ARTEX` 多出的提交只是把镜像指回已失效的 `tomicdd/artex`，无合并价值。
+
+**更新渠道**：
+- 二进制镜像：Docker Hub `mianhuatang11/artex`，最新 `v0.3.19`（2026-10-16），**新于本仓库源码**；部署推荐直接拉镜像（源码不可得，镜像为作者自维护渠道）。
+- 源码：以本仓库为准，如需更新请 `git fetch` 全部 remote 并核对 tag。
+
+**安全审查记录（2026-10-28，全量扫描）**：
+- ✅ 安装/启动脚本仅连接官方源（`get.docker.com`、`deb.nodesource.com`），无 `curl|bash` 伪装链
+- ✅ npm 无 preinstall/postinstall 网络钩子；Go 依赖均为知名库（pgx/jwt/dnsx/go-mitmproxy 等）
+- ✅ `norma` SDK 因上游闭源已 vendor 至 `./norma`（`go.mod` replace 指令），供应链可审计
+- ✅ CI（`release.yml`）为标准交叉编译流程，无 secrets 外传
+- ✅ 全仓库外联域名扫描：仅用户自配 LLM API（Anthropic/OpenAI/DeepSeek）、可选搜索插件（Brave/Tavily）、Telegram 通知模块（token 脱敏有单测覆盖），其余为测试占位符
+
+**使用红线**：仅限授权靶场与已书面授权的目标；禁止污染目标数据库（不提交测试数据）；控制发包速率避免触发封禁。
+
 </div>
 
 ---
